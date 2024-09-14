@@ -1,46 +1,41 @@
 import { useState } from 'react'
 
-const Display = ({ counter }) => <div>{counter}</div>
-
-const Button = (props) => {
-  return  (
-  <button onClick={props.onClick}>
-    {props.text}
-  </button>
-  )   
-}
-
 const App = () => {
-  const [counter, setCounter] = useState(0)
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
 
-  console.log('rendering with counter value', counter)
+  const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
-  const increaseByOne = () => {
-
-    console.log('increasing, value before', counter)
-    setCounter(counter + 1)
-  }
-
-  const decreaseByOne = () => { 
-
-    console.log('decreasing, value before', counter)
-    setCounter(counter - 1)
-  }
-
-  const setToZero = () => {
-
-    console.log('resetting to zero, value before', counter)
-    setCounter(0)
-  }
 
   return (
     <div>
-      <Display counter={counter} />
-      <Button onClick={increaseByOne} text="plus" />
-      <Button onClick={setToZero} text="zero" />
-      <Button onClick={decreaseByOne} text="minus" />
+      <div>
+        <h1>Anecdote of the day</h1>
+        {anecdotes[selected]}
+        {votes[selected] > 0 ? (
+          <p>Has {votes[selected]} votes</p>
+        ) : (
+          <p>Has 0 votes</p>
+        )}
+        <div>
+          <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>Next Anecdote</button>
+          <button onClick={() => { setVotes(votes.map((vote, index) => index === selected ? vote + 1 : vote)) }}>Vote</button>
+        </div>
+        <h1>Anecdote with most votes</h1>
+        
+      </div>
+
     </div>
   )
-} 
+}
 
 export default App
